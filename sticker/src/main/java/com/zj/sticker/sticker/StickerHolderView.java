@@ -22,9 +22,6 @@ import com.zj.sticker.sticker.utils.ScaledMotionEventWrapper;
 
 import java.util.ArrayList;
 
-import static com.zj.sticker.sticker.config.StickerConfig.StickType.IMAGE;
-import static com.zj.sticker.sticker.config.StickerConfig.StickType.TEXT;
-
 /**
  * Created by zhangjun on 2018/1/21.
  */
@@ -326,8 +323,8 @@ public class StickerHolderView extends RelativeLayout {
             }
 
             if (event.hasLongClicked() && stickerInEditMode.isInBitmap(event)) {
-                if (currentStickerView.getConfig() instanceof TextStickerConfig)
-//                    new TextChangeDialog(getContext(), currentStickerView).show();
+                if (currentStickerView.getConfig() instanceof TextStickerConfig && callback != null)
+                    callback.onTextStickerLongClick(currentStickerView);
                 return true;
             }
 
@@ -509,6 +506,7 @@ public class StickerHolderView extends RelativeLayout {
         void onTextStickerSelected(TextStickerConfig config, boolean isNew);
         void onImageStickerSelected(ImageStickerConfig config, boolean isNew);
         void onNoneStickerSelected();
+        void onTextStickerLongClick(StickerView textStickerView);
     }
 
 }
