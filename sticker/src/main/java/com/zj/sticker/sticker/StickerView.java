@@ -47,7 +47,7 @@ public class StickerView extends ImageView {
 
     private static final String TAG = "StickerView";
 
-    private static final int CACHE_THRESHOLD = 256 * 256;
+    private static final int CACHE_THRESHOLD = 512 * 512;
 
     private Paint paint;
     private Paint uiPaint;
@@ -66,6 +66,8 @@ public class StickerView extends ImageView {
 
     @Nullable
     private Bitmap stickerPictureCache;
+    @NonNull
+    private Picture cachedTextPicture;
 
     private RectF dst_resize;
 
@@ -819,7 +821,12 @@ public class StickerView extends ImageView {
             if (isText) {
                 textConfig = (TextStickerConfig) config;
                 imageConfig = null;
-                textPicture = drawTextToPicture((TextStickerConfig) config);
+                if (ignoreMemoryScale || cachedTextPicture == null) {
+                    textPicture = drawTextToPicture((TextStickerConfig) config);
+                    cachedTextPicture = textPicture;
+                }else {
+                    textPicture = cachedTextPicture;
+                }
             } else {
                 imageConfig = (ImageStickerConfig) config;
                 textConfig = null;
