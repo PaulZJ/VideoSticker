@@ -546,15 +546,15 @@ public class StickerView extends ImageView {
     @NonNull
     protected Picture drawTextToPicture(@NonNull TextStickerConfig config) {
         if (config ==null)
-            return new DefaultTextDraw().drawTextToPicture(config);
+            return new DefaultTextDraw(config).drawTextToPicture();
 
         switch (config.getFontConfig().getDisplayType()) {
             case TextDisplayType.NORMAL_TYPE:
-                return new DefaultTextDraw().drawTextToPicture(config);
+                return new DefaultTextDraw(config).drawTextToPicture();
             case TextDisplayType.STROKE_TYPE:
-                return new StokeTextDraw().drawTextToPicture(config);
+                return new StokeTextDraw(config).drawTextToPicture();
             default:
-                return new DefaultTextDraw().drawTextToPicture(config);
+                return new DefaultTextDraw(config).drawTextToPicture();
         }
     }
 

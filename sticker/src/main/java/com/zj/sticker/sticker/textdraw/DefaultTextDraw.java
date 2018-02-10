@@ -17,37 +17,38 @@ import com.zj.sticker.sticker.config.TextStickerConfig;
  */
 
 public class DefaultTextDraw implements ITextDraw {
-    @Override
-    public Picture drawTextToPicture(@NonNull TextStickerConfig config) {
-        final String text = config.getText();
+    private final TextPaint paint;
+    private final String text;
+    private final Paint bgPaint;
+    int lineTextWidth = 0;
+    int lineTextHeight = 0;
+    private TextStickerConfig config;
 
-        final Rect textBounds = new Rect();
-        final Paint bgPaint = new Paint();
-        final Picture picture = new Picture();
-        final TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-
+    public DefaultTextDraw(@NonNull TextStickerConfig config) {
+        this.config = config;
+        text = config.getText();
+        bgPaint = new Paint();
+        paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(config.getColor());
-        paint.setTextSize(config.getSize());
+        paint.setTextSize(80);
         paint.setTypeface(config.getFontConfig().getTypeface());
         paint.setAntiAlias(true);
         paint.setTextAlign(config.getAlign());
         paint.setSubpixelText(true);
         paint.setHinting(Paint.HINTING_ON);
         paint.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
-
         bgPaint.setColor(config.getBackgroundColor());
+    }
 
-        StaticLayout staticLayout = new StaticLayout("AAAAAAAAAA", paint, 1000, Layout.Alignment.ALIGN_NORMAL,
-                1.0f, 0.0f, false);
-        final int textHeight = staticLayout.getHeight();
-        final int textWidth = staticLayout.getWidth();
+    @Override
+    public Picture drawTextToPicture() {
+        final Picture picture = new Picture();
+        measureOriginTextRegion();
 
-        staticLayout = new StaticLayout(text, paint, textWidth, Layout.Alignment.ALIGN_CENTER,
-                1.0f, 0.0f, false);
-
-        final Canvas canvas = picture.beginRecording(textWidth, textHeight*staticLayout.getLineCount());
-
-        final Rect rect = new Rect(0, 0, textWidth, textHeight*staticLayout.getLineCount());
+        StaticLayout staticLayout = new StaticLayout(text, paint, lineTextWidth, Layout.Alignment.ALIGN_CENTER,
+                1f, 0.0f, false);
+        final Canvas canvas = picture.beginRecording(lineTextWidth, lineTextHeight * staticLayout.getLineCount());
+        final Rect rect = new Rect(0, 0, lineTextWidth, lineTextHeight * staticLayout.getLineCount());
         canvas.drawRect(rect, bgPaint);
         canvas.save();
         staticLayout.draw(canvas);
@@ -55,5 +56,19 @@ public class DefaultTextDraw implements ITextDraw {
         picture.endRecording();
 
         return picture;
+    }
+
+    @Override
+    public void measureOriginTextRegion() {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i< config.getMaxWordNumByLine(); i++)
+            sb.append("中");
+
+        StaticLayout testLayout = new StaticLayout("A", paint, (int) paint.measureText(sb.toString()), Layout.Alignment.ALIGN_NORMAL,
+                1.0f, 0.0f, false);
+        final int textHeight = testLayout.getHeight();
+        final int textWidth = testLayout.getWidth();
+        lineTextWidth = textWidth;
+        lineTextHeight = textHeight;
     }
 }

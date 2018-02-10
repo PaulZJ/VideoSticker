@@ -20,6 +20,11 @@ public class TextStickerConfig implements StickerConfig{
     private int backgroundColor;
     private Paint.Align align;
 
+    /**
+     * 默认限制每行8个字
+     * */
+    private int maxWordNumByLine = 8;
+
     private final String identifierId = UUID.randomUUID().toString();
 
     @Override

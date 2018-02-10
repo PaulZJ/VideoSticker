@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements StickerHolderView
             public int getDisplayType() {
                 return TextDisplayType.STROKE_TYPE;
             }
-        }, DEFAULT_COLOR, 20, DEFAULT_BG_COLOR, Paint.Align.LEFT));
+        }, DEFAULT_COLOR, 20, DEFAULT_BG_COLOR, Paint.Align.LEFT,8));
     }
 
     public void OnClickRun(View view) {

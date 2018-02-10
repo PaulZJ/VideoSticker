@@ -10,5 +10,12 @@ import com.zj.sticker.sticker.config.TextStickerConfig;
  */
 
 public interface ITextDraw {
-    Picture drawTextToPicture(@NonNull TextStickerConfig config);
+    /**
+     * get the Picture Object with the Path of Texts
+     * */
+    Picture drawTextToPicture();
+    /**
+     * limit the Region to draw text
+     * */
+    void measureOriginTextRegion();
 }
