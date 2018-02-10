@@ -9,12 +9,11 @@ import android.support.annotation.RawRes;
 
 public class ImageStickerConfig implements StickerConfig {
 
-    private @RawRes int stickerId;
+    private @DrawableRes @RawRes int stickerId;
 
     public ImageStickerConfig(@DrawableRes @RawRes int stickerId) {
         this.stickerId = stickerId;
     }
-
     @Override
     public StickType getType() {
         return StickType.IMAGE;
@@ -22,6 +21,6 @@ public class ImageStickerConfig implements StickerConfig {
 
     @Override
     public @DrawableRes @RawRes int getStickerId() {
-        return 0;
+        return stickerId;
     }
 }
