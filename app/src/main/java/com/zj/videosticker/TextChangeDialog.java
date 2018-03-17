@@ -70,10 +70,10 @@ public class TextChangeDialog extends Dialog{
 
     private void initWindows() {
         Window window = getWindow();
-        if (null != window) {
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_MODE_CHANGED |
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-            window.getDecorView().setPadding(0,0,0,0);
+        if (window != null) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            window.getDecorView().setPadding(0, 0, 0, 0);
             WindowManager.LayoutParams params = window.getAttributes();
             params.width = WindowManager.LayoutParams.MATCH_PARENT;
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
