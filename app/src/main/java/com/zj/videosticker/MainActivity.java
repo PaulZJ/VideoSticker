@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 
 import com.zj.sticker.select.IPlayer;
 import com.zj.sticker.select.SelectHolderImp;
@@ -21,6 +23,7 @@ import com.zj.sticker.sticker.config.IFonConfig;
 import com.zj.sticker.sticker.config.ImageStickerConfig;
 import com.zj.sticker.sticker.config.TextStickerConfig;
 import com.zj.sticker.sticker.config.consts.TextDisplayType;
+import com.zj.sticker.sticker.utils.LocalDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements StickerHolderView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LocalDisplay.init(MainActivity.this);
         setContentView(R.layout.activity_main);
         holderView = (StickerHolderView) findViewById(R.id.sticker_holder);
         holderView.setTextStickerSelectionCallback(this);
@@ -81,21 +85,56 @@ public class MainActivity extends AppCompatActivity implements StickerHolderView
     }
 
     public void OnClickAddText(View view) {
-        SelectHolderImp selectHolderImp = selectManager.addSelectHolder(selectManager.getCurrTimePoint(), 3000, new
-                SelectView((ViewGroup) recyclerView.getParent()), 1000);
-        holderView.addStickerView(selectHolderImp, new TextStickerConfig("this is a test", new IFonConfig
-                () {
-            @Nullable
+        PopupMenu popupWindow = new PopupMenu(view.getContext(), view);
+        getMenuInflater().inflate(R.menu.word_art, popupWindow.getMenu());
+        popupWindow.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public Typeface getTypeface() {
-                return null;
-            }
+            public boolean onMenuItemClick(MenuItem item) {
+                int type = TextDisplayType.NORMAL_TYPE;
+                switch (item.getItemId()) {
+                    case R.id.wa_1:
+                        type = TextDisplayType.ART_TYPE_ONE;
+                        break;
+                    case R.id.wa_2:
+                        type = TextDisplayType.ART_TYPE_TWO;
+                        break;
+                    case R.id.wa_3:
+                        type = TextDisplayType.ART_TYPE_THREE;
+                        break;
+                    case R.id.wa_4:
+                        type = TextDisplayType.ART_TYPE_FOUR;
+                        break;
+                    case R.id.w_stroke:
+                        type = TextDisplayType.STOKE_TYPE;
+                        break;
+                    case R.id.w_default:
+                        type = TextDisplayType.NORMAL_TYPE;
+                        break;
+                    case R.id.wa_3_v:
+                        type = TextDisplayType.ART_TYPE_THREE_VERTICAL;
+                }
+                final int toType = type;
+                SelectHolderImp selectHolderImp = selectManager.addSelectHolder(selectManager.getCurrTimePoint(),
+                        3000, new SelectView((ViewGroup) recyclerView.getParent()), 1000);
+                holderView.addStickerView(selectHolderImp, new TextStickerConfig("this is a test",
+                        new IFonConfig() {
+                    @Nullable
+                    @Override
+                    public Typeface getTypeface() {
+                        return null;
+                    }
 
-            @Override
-            public int getDisplayType() {
-                return TextDisplayType.STROKE_TYPE;
+                            @Override
+                            public int getDisplayType() {
+                                return toType;
+                            }
+
+
+                        }, DEFAULT_COLOR, 20,DEFAULT_BG_COLOR,Paint.Align.LEFT ,8));
+                return true;
             }
-        }, DEFAULT_COLOR, 20, DEFAULT_BG_COLOR, Paint.Align.LEFT,8));
+        });
+        popupWindow.show();
     }
 
     public void OnClickRun(View view) {
@@ -170,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements StickerHolderView
 
     @Override
     public void onTextStickerLongClick(StickerView textStickerView) {
-
+        new TextChangeDialog(MainActivity.this, textStickerView).show();
     }
 
     private class TestAdapter extends RecyclerView.Adapter {

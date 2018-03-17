@@ -1,5 +1,6 @@
 package com.zj.videosticker;
 
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -60,6 +61,11 @@ public class TextChangeDialog extends Dialog{
     protected void onCreate(Bundle savedInstanceState) {
         initWindows();
         super.onCreate(savedInstanceState);
+        setContentView(content);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "alpha", 0, 1);
+        animator.setStartDelay(200);
+        animator.setDuration(200);
+        animator.start();
     }
 
     private void initWindows() {

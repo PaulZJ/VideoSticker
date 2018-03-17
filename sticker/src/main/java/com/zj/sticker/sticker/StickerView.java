@@ -27,6 +27,7 @@ import com.zj.sticker.sticker.config.ImageStickerConfig;
 import com.zj.sticker.sticker.config.StickerConfig;
 import com.zj.sticker.sticker.config.TextStickerConfig;
 import com.zj.sticker.sticker.config.consts.TextDisplayType;
+import com.zj.sticker.sticker.textdraw.ArtTextDraw;
 import com.zj.sticker.sticker.textdraw.DefaultTextDraw;
 import com.zj.sticker.sticker.textdraw.StokeTextDraw;
 import com.zj.sticker.sticker.utils.BitmapFactoryUtils;
@@ -551,9 +552,19 @@ public class StickerView extends ImageView {
         switch (config.getFontConfig().getDisplayType()) {
             case TextDisplayType.NORMAL_TYPE:
                 return new DefaultTextDraw(config).drawTextToPicture();
-            case TextDisplayType.STROKE_TYPE:
+            case TextDisplayType.STOKE_TYPE:
                 return new StokeTextDraw(config).drawTextToPicture();
-            default:
+            case TextDisplayType.ART_TYPE_ONE:
+                return new ArtTextDraw(ArtTextDraw.Config.ART_WORD_ONE.setTextStickerConfig(config)).drawTextToPicture();
+            case TextDisplayType.ART_TYPE_TWO:
+                return new ArtTextDraw(ArtTextDraw.Config.ART_WORD_TWO.setTextStickerConfig(config)).drawTextToPicture();
+            case TextDisplayType.ART_TYPE_THREE:
+                return new ArtTextDraw(ArtTextDraw.Config.ART_WORD_THREE.setTextStickerConfig(config)).drawTextToPicture();
+            case TextDisplayType.ART_TYPE_FOUR:
+                return new ArtTextDraw(ArtTextDraw.Config.ART_WORD_FOUR.setTextStickerConfig(config)).drawTextToPicture();
+            case TextDisplayType.ART_TYPE_THREE_VERTICAL:
+                return new ArtTextDraw(ArtTextDraw.Config.ART_WORD_THREE_VERTICAL.setTextStickerConfig(config)).drawTextToPicture();
+                default:
                 return new DefaultTextDraw(config).drawTextToPicture();
         }
     }
