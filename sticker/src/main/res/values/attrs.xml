@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PathView">
+        <attr name="duration" />
+        <attr name="showPainter" />
+        <attr name="showPainterActually" />
+        <attr name="pathStrokeWidth" />
+        <attr name="pathStrokeColor" />
+        <attr name="paintStrokeWidth" />
+        <attr name="paintStrokeColor" />
+        <attr name="repeat" />
+    </declare-styleable>
+
+</resources>
